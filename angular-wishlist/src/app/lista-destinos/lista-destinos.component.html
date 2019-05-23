@@ -1,0 +1,57 @@
+<div class="container content">
+	 <div class="row">
+	     <div class="col-md-9 offset-md-2">
+	         <span class="anchor" id="formLogin"></span>
+	         <!-- form card login with validation feedback -->
+	         <div class="card card-outline-secondary">
+	             <div class="card-header">
+	                 <h3 class="mb-0">Wish List</h3>
+	             </div>
+	             <div class="card-body">
+	                 <form>
+	                   <div class="row">
+		                   	<div class="col-md-6">
+		                   		<div class="form-group">
+				                     <label for="nombre">Nombre</label>
+				                     <input  class="form-control" name="nombre" placeholder="Ingresar nombre..." #nombre>
+			                   </div>
+		                   	</div>
+		                   	<div class="col-md-6">
+		                   		<div class="form-group">
+				                     <label for="country">Pa&iacute;s</label>
+				                     <input  class="form-control" name="country" placeholder="Ingresar el paìs..." #country>
+			                   </div>	             
+		                   	</div>	                   	
+		                   <div class="form-group col-md-12">
+			                     <label for="Url">Imagen Url</label>
+			                     <input class="form-control" name="url" placeholder="Ingresar url..." #url>
+		                   </div>
+		                   <div class="form-group col-md-12">
+			                     <label for="desc">Descripci&oacute;n</label>
+			                     <textarea class="form-control" name="desc" placeholder="Ingresar descripciòn..." #desc></textarea>
+		                   </div>
+	                   </div>
+	                   <div class="row">
+	                   	<div class="col-md-6"></div>
+	                   	<div class="col-md-6"></div>
+	                   </div>
+	                   
+	                   <button type="submit" class="btn	btn-primary" (click)="guardar(nombre.value, url.value, country.value, desc.value);false;">Guardar</button>
+	                 </form>
+	             </div>
+	         </div>
+	     </div>
+	 </div>
+	 <hr class="mb-5">
+	 <div class="row">
+	 	<ul class="col-md-12">
+	 		<p>Sitios Agregados:</p>
+	 		<li *ngFor="let x of destinos" class="col-md-4 inline-block">
+	 			{{x.name}}
+	 		</li>
+	 	</ul>
+	 </div>
+	 <div class="row">
+    	<app-destino-viaje *ngFor="let x of destinos" [destino]="x"></app-destino-viaje>
+	 </div>
+</div>
