@@ -1,0 +1,40 @@
+<form [formGroup]="fg" (ngSubmit)="guardar(fg.controls)">
+    <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" class="form-control" id="nombre" placeholder="Ingresar nombre..." [formControl]="fg.controls['nombre']">
+            <div *ngIf="fg.controls['nombre'].hasError('required')">Nombre Requerido</div>
+            <div *ngIf="fg.controls['nombre'].hasError('invalidNombre')">Nombre Invalido</div>
+            <div *ngIf="fg.controls['nombre'].hasError('minLongNumber')">Nombre debe tener al menos {{minLongitud}} de largo.</div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="country">Pa&iacute;s</label>
+            <input type="text" class="form-control" id="country" placeholder="Ingresar el paìs..."  [formControl]="fg.controls['country']">
+            <ul>
+              <li *ngFor="let r of searchResults;">{{r}}</li>
+            </ul>
+            <div *ngIf="!fg.controls['country'].valid">Nombre inv&aacute;lido.</div>
+            <div *ngIf="fg.controls['country'].hasError('required')">Nombre Requerido</div>
+        </div>	             
+        </div>	                   	
+      <div class="form-group col-md-12">
+          <label for="Url">Imagen Url</label>
+          <input type="text" class="form-control" id="url" placeholder="Ingresar url..."  [formControl]="fg.controls['url']">
+          <div *ngIf="!fg.controls['url'].valid">Nombre inv&aacute;lido.</div>
+      </div>
+      <div class="form-group col-md-12">
+          <label for="desc">Descripci&oacute;n</label>
+          <textarea type="text" class="form-control" id="desc" placeholder="Ingresar descripciòn..."  [formControl]="fg.controls['desc']"></textarea>
+          <div *ngIf="!fg.controls['desc'].valid">Nombre inv&aacute;lido.</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6"></div>
+      <div class="col-md-6"></div>
+    </div>
+    
+    <button type="submit" class="btn btn-primary" *ngIf="fg.valid">Guardar</button>
+  </form>

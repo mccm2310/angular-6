@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component, EventEmitter, Output, OnInit } from '@angular/core';
 import { DestinoViaje } from '../models/destino-viaje.model';
+import { DestinosApiClient } from '../models/destinos-api-client.model';
 
 @Component({
   selector: 'app-lista-destinos',
@@ -8,26 +8,29 @@ import { DestinoViaje } from '../models/destino-viaje.model';
   styleUrls: ['./lista-destinos.component.css']
 })
 export class ListaDestinosComponent implements OnInit {
-  destinos: string[];
-  constructor() {
-  	this.destinos = [
-    new DestinoViaje('Barcelona', 'https://placeimg.com/380/230/nature', 'España', 'Deseo1'),
-    new DestinoViaje('Buenos Aires', 'https://placeimg.com/380/230/arch', 'Argentina', 'Deseo2'),
-    new DestinoViaje('Lima', 'https://placeimg.com/380/230/people', 'Perù', 'Deseo3'),
-    new DestinoViaje('Barranquilla', 'https://placeimg.com/380/230/animals', 'Colombia', 'Deseo4'),];  	
+  @Output() onItemAdded: EventEmitter<DestinoViaje>;
+  updates: string[];
+
+  constructor(private destinosApiClient: DestinosApiClient) {  	
+    this.onItemAdded = new EventEmitter();
+    this.updates = [];
+    this.destinosApiClient.subscribeOnChange((d:DestinoViaje) => {
+      if(d!=null){
+        this.updates.push('Se ha elegido a '+d.nombre+'.')
+      }
+    });
   }
 
   ngOnInit() {
   }
 
-  guardar(n:string, u:string, c:string, d:string): boolean { 
-    if (!n) 
-      return; 
-    if (!u)
-      u = 'https://placeimg.com/380/230/people';
+  agregado(d : DestinoViaje) { 
+    this.destinosApiClient.add(d);
+    this.onItemAdded.emit(d);
+  }
 
-    this.destinos.push(new DestinoViaje(n, u, c, d));
-    console.log(this.destinos)
+  elegido(e:DestinoViaje) {
+    this.destinosApiClient.elegir(e);
   }
 
 }
