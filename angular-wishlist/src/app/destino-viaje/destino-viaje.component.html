@@ -2,9 +2,13 @@
     <div class="card-content">
         <div class="card-img">            
             <h2>{{ destino.nombre }} {{position}}</h2>
-	        <img src="{{ destino.imagenUrl }}" alt="">
+            <h5 (click)="eliminar();false">&times;</h5>
+            <img src="{{ destino.imagenUrl }}" alt="">
         </div>
         <div class="card-desc">
+            <div class="favorite" *ngIf="destino.isSelected()" ngNonBindable>
+                {{Destino seleccionado como favorito!}}
+            </div>
             <h4>{{ destino.country }}</h4>
             <p>{{ destino.desc }}</p>
             <p>Servicios<p>
@@ -16,13 +20,10 @@
                     </span>
                 </li>
             </ul>
-            <a href="#" class="btn-card" (click)="ir();false">Ir</a>
-            <span *ngIf="destino.isSelected()">
-                <span ngNonBindable>
-                    - {{PREFERIDO}} -
-                </span>
-            </span>                 
-            <a [routerLink]="['/destino', destino.id]">Ver Detalle</a>
+            <div class="buttons-bar">
+                <button class="btn-card" (click)="ir();false" *ngIf="!destino.isSelected()">Favorito!</button>                
+                <button class="btn-card" [routerLink]="['/destino', destino.id]" [style.margin-left.px]="15">Ver Detalle</button>
+            </div>
         </div>
     </div>
 </div>

@@ -3,7 +3,7 @@ import { DestinoViaje } from '../models/destino-viaje.model';
 import { FormGroup, FormBuilder, Validators, FormControl, ValidatorFn } from '@angular/forms';
 import { fromEvent } from 'rxjs';
 import { map, filter, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
-import { ajax, ajaxResponse } from 'rxjs/ajax';
+import { ajax, AjaxResponse } from 'rxjs/ajax';
 
 
 @Component({

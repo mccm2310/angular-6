@@ -13,7 +13,7 @@ export interface DestinosViajesState{
 }
 
 export const initializeDestinosViajesState = function(){
-    return {
+    return { 
 	    items: [],
 	    loading: false,
 	    favorito: null
@@ -23,7 +23,8 @@ export const initializeDestinosViajesState = function(){
 //ACCIONES
 export enum DestinosViajesActionTypes {
   NUEVO_DESTINO = '[Destinos Viajes] Nuevo',
-  ELEGIDO_FAVORITO = '[Destinos Viajes] Favorito'
+  ELEGIDO_FAVORITO = '[Destinos Viajes] Favorito',
+  ELIMINAR_DESTINO = '[Destinos Viajes] Eliminar',
 }
 
 export class NuevoDestinoAction implements Action {
@@ -36,7 +37,12 @@ export class ElegidoFavoritoAction implements Action {
   constructor(public destino: DestinoViaje) {}
 }
 
-export type DestinosViajesActions = NuevoDestinoAction | ElegidoFavoritoAction;
+export class EliminarDestinoAction implements Action {
+  type = DestinosViajesActionTypes.ELIMINAR_DESTINO;
+  constructor(public idx: number) {}
+}
+
+export type DestinosViajesActions = NuevoDestinoAction | ElegidoFavoritoAction | EliminarDestinoAction;
 
 //REDUCERS
 export function reducerDestinosViajes(
@@ -58,6 +64,13 @@ export function reducerDestinosViajes(
 		    	...state,
 		  		favorito: fav
 		    };
+		}
+		case DestinosViajesActionTypes.ELIMINAR_DESTINO: {	
+				let idx: number = (action as EliminarDestinoAction).idx;
+				state.items.splice(idx, 1);
+				return {
+						...state
+		  	};
 		}
 	}
 	return state;

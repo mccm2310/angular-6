@@ -13,16 +13,22 @@ export class DestinoViajeComponent implements OnInit {
 	@Input() destino: DestinoViaje;
 	@Input('idx') position: number;
 	@HostBinding('attr.class') cssClass = 'col-md-6';
-	@Output() onClicked: EventEmitter<DestinoViaje>
+	@Output() selectItem: EventEmitter<DestinoViaje>
+	@Output() deleteItem: EventEmitter<Number>
 
   constructor() {
-  		this.onClicked = new EventEmitter();
+  		this.selectItem = new EventEmitter();
+  		this.deleteItem = new EventEmitter();
   }
 
   ngOnInit() {
   }
 
   ir() {
-  	this.onClicked.emit(this.destino);
+  	this.selectItem.emit(this.destino);
+  }
+
+  eliminar() {
+  	this.deleteItem.emit();
   }
 }

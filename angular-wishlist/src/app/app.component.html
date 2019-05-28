@@ -1,8 +1,9 @@
-
+<div class="header">
+<h1 [style.margin-top.px]="15">Wish List</h1>
+</div>
 <div class="container content">
   <div class="page-header">
     <div class="container">
-      <h1>Ruteo Simple</h1>
       <div class="navLinks">
         <a [routerLink]="['/home']">Home</a>
         <a [routerLink]="['/destino']">Destino</a>
@@ -16,6 +17,6 @@
   </div>
   <router-outlet></router-outlet>
 </div>
-
-<hr class="mb-5">
-Fecha: {{ time | async }}
+<div class="footer">
+    Fecha: {{ time | async }}
+</div>

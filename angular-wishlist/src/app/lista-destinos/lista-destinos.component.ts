@@ -1,6 +1,9 @@
 import { Component, EventEmitter, Output, OnInit } from '@angular/core';
 import { DestinoViaje } from '../models/destino-viaje.model';
 import { DestinosApiClient } from '../models/destinos-api-client.model';
+import { DestinosViajesState } from '../models/destino-viaje-state.model';
+import { Store } from '@ngrx/store';
+import {AppState} from './../app.module'
 
 @Component({
   selector: 'app-lista-destinos',
@@ -8,29 +11,48 @@ import { DestinosApiClient } from '../models/destinos-api-client.model';
   styleUrls: ['./lista-destinos.component.css']
 })
 export class ListaDestinosComponent implements OnInit {
-  @Output() onItemAdded: EventEmitter<DestinoViaje>;
   updates: string[];
+  lastFavorito: any;
+  count: number;
 
-  constructor(private destinosApiClient: DestinosApiClient) {  	
-    this.onItemAdded = new EventEmitter();
+  constructor(private destinosApiClient:DestinosApiClient, private store: Store<AppState>) {  	
     this.updates = [];
-    this.destinosApiClient.subscribeOnChange((d:DestinoViaje) => {
-      if(d!=null){
-        this.updates.push('Se ha elegido a '+d.nombre+'.')
-      }
-    });
+    this.lastFavorito = '';
+    this.count= 0
   }
 
   ngOnInit() {
+    this.store.select(state => state.destinos)
+      .subscribe(data => {
+        if(data.items.length == 0) return;
+
+        let d = data.items[data.items.length-1];
+        if(data.items.length > this.count){
+          this.updates.push("Se creó: " + d.nombre);
+        }
+        else if(data.items.length < this.count){
+          this.updates.push("Se elimino un destino");
+        }
+        
+        if ( data.favorito != null && (data.favorito != this.lastFavorito)) {
+          this.updates.push("Se eligió: " + data.favorito.nombre);
+        }
+        
+        this.lastFavorito = data.favorito;
+        this.count = data.items.length;
+      });
   }
 
   agregado(d : DestinoViaje) { 
     this.destinosApiClient.add(d);
-    this.onItemAdded.emit(d);
   }
 
-  elegido(e:DestinoViaje) {
+  elegido(e:DestinoViaje) {    
     this.destinosApiClient.elegir(e);
+  }
+
+  eliminado(i : number) { 
+    this.destinosApiClient.deleteOne(i);
   }
 
 }
