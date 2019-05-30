@@ -4,6 +4,7 @@ import { DestinosApiClient } from '../models/destinos-api-client.model';
 import { DestinosViajesState } from '../models/destino-viaje-state.model';
 import { Store } from '@ngrx/store';
 import {AppState} from './../app.module'
+import { store } from '@angular/core/src/render3';
 
 @Component({
   selector: 'app-lista-destinos',
@@ -14,6 +15,7 @@ export class ListaDestinosComponent implements OnInit {
   updates: string[];
   lastFavorito: any;
   count: number;
+  all;
 
   constructor(private destinosApiClient:DestinosApiClient, private store: Store<AppState>) {  	
     this.updates = [];
@@ -39,8 +41,9 @@ export class ListaDestinosComponent implements OnInit {
         }
         
         this.lastFavorito = data.favorito;
-        this.count = data.items.length;
+        this.count = data.items.length;        
       });
+      this.store.select(state => state.destinos.items).subscribe(items => this.all = items);
   }
 
   agregado(d : DestinoViaje) { 

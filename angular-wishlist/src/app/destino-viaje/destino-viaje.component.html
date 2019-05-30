@@ -1,7 +1,7 @@
 <div class="card">
     <div class="card-content">
         <div class="card-img">            
-            <h2>{{ destino.nombre }} {{position}}</h2>
+            <h2>{{ destino.nombre }}</h2><small>Votos:  {{destino.votes}}</small>
             <h5 (click)="eliminar();false">&times;</h5>
             <img src="{{ destino.imagenUrl }}" alt="">
         </div>
@@ -20,9 +20,14 @@
                     </span>
                 </li>
             </ul>
+            <div>
+                <button class="btn-vote" (click)="voteUp();false"> <i class="material-icons md18">thumb_up</i></button>
+                <button class="btn-vote" (click)="voteDown();false"> <i class="material-icons md18">thumb_down</i></button>                
+                <button class="btn-vote-reset" (click)="resetVotes();false" title="Resetear">&times;</button>
+            </div>
             <div class="buttons-bar">
                 <button class="btn-card" (click)="ir();false" *ngIf="!destino.isSelected()">Favorito!</button>                
-                <button class="btn-card" [routerLink]="['/destino', destino.id]" [style.margin-left.px]="15">Ver Detalle</button>
+                <button class="btn-card" [routerLink]="['/destino', destino.id]" [style.margin-left.px]="15">Ver Detalle</button>   
             </div>
         </div>
     </div>

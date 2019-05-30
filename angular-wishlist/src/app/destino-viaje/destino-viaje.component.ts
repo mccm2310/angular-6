@@ -1,6 +1,9 @@
 import { Component, OnInit, Input, Output, HostBinding, EventEmitter } from '@angular/core';
 
 import { DestinoViaje } from '../models/destino-viaje.model';
+import { Store } from '@ngrx/store';
+import { AppState } from '../app.module';
+import { VoteUpAction, VoteDownAction, ResetVotesAction } from '../models/destino-viaje-state.model';
 
 
 @Component({
@@ -16,7 +19,7 @@ export class DestinoViajeComponent implements OnInit {
 	@Output() selectItem: EventEmitter<DestinoViaje>
 	@Output() deleteItem: EventEmitter<Number>
 
-  constructor() {
+  constructor(private store: Store<AppState>) {
   		this.selectItem = new EventEmitter();
   		this.deleteItem = new EventEmitter();
   }
@@ -30,5 +33,17 @@ export class DestinoViajeComponent implements OnInit {
 
   eliminar() {
   	this.deleteItem.emit();
+  }
+
+  voteUp() {
+    this.store.dispatch(new VoteUpAction(this.destino));
+  }
+
+  voteDown() {  	
+    this.store.dispatch(new VoteDownAction(this.destino));
+  }
+
+  resetVotes(){
+    this.store.dispatch(new ResetVotesAction(this.destino));
   }
 }

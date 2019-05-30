@@ -54,11 +54,23 @@ section{
 	-ms-border-radius:	4px;
 	-o-border-radius:	4px;
 }
+.card-img small {
+	position:	absolute;
+	margin: 3.5rem 0 0 0.3rem;
+	background:	#1ABC9C;
+	padding:	6px;
+	color:	#fff;
+	border-radius:	4px;
+	-webkit-border-radius:	4px;
+	-moz-border-radius:	4px;
+	-ms-border-radius:	4px;
+	-o-border-radius:	4px;
+}
 .card-img h5 {
 	position: absolute;
     margin: 3px 4px 0 1rem;
     color: white;
-    padding: 0px 5px 2px 5px;
+    padding: 0px 5px 3px 5px;
     right: 0;
     background: #1ABC9C;
     border-radius: 12px;
@@ -177,5 +189,22 @@ a.btn-card	{
 	background: #19BC9C;
 	padding:20px 0;
 	color:white;
+}
+.btn-vote{
+	background: none;
+	border: 1px solid #1ABC9C;	
+    vertical-align: top;
+    padding-top: 5px;
+    color: darkcyan;
+    margin-left: 6px;
+}
+.btn-vote-reset{
+	background: none;
+	border: 1px solid #1ABC9C;
+	border-radius: 15px;
+    margin: 5px;
+    color: darkcyan;
+    font-size: 17px;
+    padding: 0 7px 3px 7px;
 }
 /*	End	card	section	*/
