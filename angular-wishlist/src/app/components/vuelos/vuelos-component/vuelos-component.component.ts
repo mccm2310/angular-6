@@ -2,15 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-vuelos-detalle',
-  templateUrl: './vuelos-detalle.component.html',
-  styleUrls: ['./vuelos-detalle.component.css']
+  selector: 'app-vuelos-component',
+  templateUrl: './vuelos-component.component.html',
+  styleUrls: ['./vuelos-component.component.css']
 })
-export class VuelosDetalleComponent implements OnInit {
-  id: any;
+export class VuelosComponentComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute) {
-    route.params.subscribe(params => { this.id = params['id']; });
+
+  constructor() {
   }
   ngOnInit() {
   }
