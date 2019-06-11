@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { DestinoViaje } from '../models/destino-viaje.model';
-import { DestinosApiClient } from '../models/destinos-api-client.model';
+import { DestinoViaje } from '../../models/destino-viaje.model';
+import { DestinosApiClient } from '../../models/destinos-api-client.model';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({

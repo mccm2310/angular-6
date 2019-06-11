@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Output, OnInit } from '@angular/core';
-import { DestinoViaje } from '../models/destino-viaje.model';
-import { DestinosApiClient } from '../models/destinos-api-client.model';
-import { DestinosViajesState } from '../models/destino-viaje-state.model';
+import { DestinoViaje } from '../../models/destino-viaje.model';
+import { DestinosApiClient } from '../../models/destinos-api-client.model';
+import { DestinosViajesState } from '../../models/destino-viaje-state.model';
 import { Store } from '@ngrx/store';
-import {AppState} from './../app.module'
+import {AppState} from '../../app.module'
 import { store } from '@angular/core/src/render3';
 
 @Component({
