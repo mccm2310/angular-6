@@ -1,5 +1,5 @@
 import { Component, OnInit, InjectionToken, Inject } from '@angular/core';
-//import { DestinosApiClient } from '../../models/destinos-api-client.model';
+import { DestinosApiClient } from '../../models/destinos-api-client.model';
 import { DestinoViaje } from '../../models/destino-viaje.model';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -13,18 +13,18 @@ const APP_CONFIG_VALUE: AppConfig = {
 };
 const APP_CONFIG = new InjectionToken<AppConfig>('app.config');
 
-// class DestinosApiClientDecorated extends DestinosApiClient {
-//   constructor(@Inject(APP_CONFIG) private config: AppConfig, store: Store<AppState>) {
-//     super(store);
-//   }
-//   getById(id: String): DestinoViaje {
-//     console.log('llamando por la clase decorada!');
-//     console.log('config: ' + this.config.apiEndpoint);
-//     return super.getById(id);
-//   }
-// }
+class DestinosApiClientDecorated extends DestinosApiClient {
+  constructor(@Inject(APP_CONFIG) private config: AppConfig, store: Store<AppState>) {
+    super(store);
+  }
+  getById(id: String): DestinoViaje {
+    console.log('llamando por la clase decorada!');
+    console.log('config: ' + this.config.apiEndpoint);
+    return super.getById(id);
+  }
+}
 
-class DestinosApiClient {
+class DestinosApiClientViejo {
   getById(id: String): DestinoViaje {
     console.log('llamando por la clase vieja!');
     return null;
@@ -35,23 +35,21 @@ class DestinosApiClient {
   selector: 'app-destino-detalle',
   templateUrl: './destino-detalle.component.html',
   styleUrls: ['./destino-detalle.component.css'],
-  providers: [DestinosApiClient]
-  // providers: [ { provide: DestinosApiClient, useClass: DestinosApiClientDecorated } ],
-  // providers: [
-  //   //{ provide: DestinosApiClient, useClass: DestinosApiClientDecorated },
-  //   { provide: DestinosApiClient, useClass: DestinosApiClient },
-  //   { provide: APP_CONFIG, useValue: APP_CONFIG_VALUE }
-  // ]
+  providers: [    
+    { provide: DestinosApiClient, useClass: DestinosApiClientDecorated },
+    { provide: DestinosApiClientViejo, useExisting: DestinosApiClient },
+    { provide: APP_CONFIG, useValue: APP_CONFIG_VALUE }
+  ]
 })
+
 export class DestinoDetalleComponent implements OnInit {
   destino:DestinoViaje;
 
-  // constructor(private route: ActivatedRoute, private destinosApiClient: DestinosApiClient) {}
-  constructor(private route: ActivatedRoute, private destinosApiClient: DestinosApiClient) {}
+  constructor(private route: ActivatedRoute, private destinosApiClient: DestinosApiClientViejo) {}
 
   ngOnInit() {
-	  let id = this.route.snapshot.paramMap.get('id');
-      this.destino = this.destinosApiClient.getById(id);
+	  const id = this.route.snapshot.paramMap.get('id');
+    this.destino = this.destinosApiClient.getById(id);
   }
 
 }

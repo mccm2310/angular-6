@@ -13,6 +13,7 @@ import {AppState} from './../app.module';
 
 @Injectable()
 export class DestinosApiClient {
+	destinos: DestinoViaje[] = [];
 
 	constructor(private store: Store<AppState>) {
 	}
@@ -26,4 +27,9 @@ export class DestinosApiClient {
 	deleteOne(idx:number){
 		this.store.dispatch(new EliminarDestinoAction(idx));
 	}
+
+	getById(id: String): DestinoViaje {
+		debugger
+		return this.destinos.filter(function(d) { return d.id.toString() === id; })[0];
+	  }
 }
