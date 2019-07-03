@@ -1,9 +1,10 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Inject, forwardRef } from '@angular/core';
 import { DestinoViaje } from '../../models/destino-viaje.model';
 import { FormGroup, FormBuilder, Validators, FormControl, ValidatorFn } from '@angular/forms';
 import { fromEvent } from 'rxjs';
 import { map, filter, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { ajax, AjaxResponse } from 'rxjs/ajax';
+import { APP_CONFIG, AppConfig } from 'src/app/app.module';
 
 
 @Component({
@@ -17,7 +18,7 @@ fg: FormGroup;
 minLongitud = 3;
 searchResults: string[];
 
-  constructor(fb: FormBuilder) { 
+  constructor(fb: FormBuilder, @Inject(forwardRef(() => APP_CONFIG)) private config: AppConfig) { 
     this.onItemAdded = new EventEmitter();
     this.fg = fb.group({
       nombre: ['', Validators.compose([
@@ -51,18 +52,8 @@ searchResults: string[];
       filter(text => text.length > 2),
       debounceTime(200),
       distinctUntilChanged(),
-      switchMap( () => ajax('/assets/datos.json'))
-    ).subscribe( ajaxResponse => {      
-      searchResults2= [];
-      
-      ajaxResponse.response.forEach(function(option:string) {        
-        if((option.toUpperCase()).includes((elemNombre.value).toUpperCase())){
-          searchResults2.push(option)
-        }        
-      });     
-      
-      this.searchResults = searchResults2;
-    });    
+      switchMap((text: string) => ajax(this.config.apiEndpoint + '/ciudades?q=' + text))
+    ).subscribe(ajaxResponse => this.searchResults = ajaxResponse.response);
   }
 
   guardar(destino: any):boolean{
