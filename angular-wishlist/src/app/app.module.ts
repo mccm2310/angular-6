@@ -5,7 +5,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StoreModule as NgRxStoreModule, ActionReducerMap, Store  } from '@ngrx/store';
 import { EffectsModule  } from '@ngrx/effects'
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { HttpClientModule, HttpClient, HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpClientModule, HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
+import Dexie from 'dexie';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
 import { AppComponent } from './app.component';
 import { DestinoViajeComponent } from './components/destino-viaje/destino-viaje.component';
@@ -17,7 +19,8 @@ import {
   DestinosViajesState, 
   reducerDestinosViajes, 
   initializeDestinosViajesState,
-  DestinosViajesEffects } from './models/destino-viaje-state.model';
+  DestinosViajesEffects, 
+  initMyDataAction} from './models/destino-viaje-state.model';
 import { LoginComponent } from './components/login/login/login.component';
 import { ProtectedComponent } from './components/protected/protected/protected.component';
 import { AuthService } from './services/auth.service';
@@ -27,6 +30,10 @@ import { VuelosMainComponentComponent } from './components/vuelos/vuelos-main-co
 import { VuelosMasInfoComponentComponent } from './components/vuelos/vuelos-mas-info-component/vuelos-mas-info-component.component';
 import { VuelosDetalleComponentComponent } from './components/vuelos/vuelos-detalle-component/vuelos-detalle-component.component';
 import { ReservasModule } from './reservas/reservas.module';
+import { DestinoViaje } from './models/destino-viaje.model';
+import { from, Observable } from 'rxjs';
+import { flatMap, map } from 'rxjs/operators';
+
 // app config
 export interface AppConfig {
   apiEndpoint: String;
@@ -90,11 +97,79 @@ class AppLoadService {
     const headers: HttpHeaders = new HttpHeaders({'X-API-TOKEN': 'token-seguridad'});
     const req = new HttpRequest('GET', APP_CONFIG_VALUE.apiEndpoint + '/my', { headers: headers });
     const response: any = await this.http.request(req).toPromise();
-    this.store.dispatch(new InitMyDataAction(response.body));
+    this.store.dispatch(new initMyDataAction(response.body));
   }
 }
 
 // fin app init
+
+// dexie db
+export class Translation {
+  constructor(public trs: any, public keysObj: any) {}
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class MyDatabase extends Dexie {
+  destinos: Dexie.Table<DestinoViaje, number>;
+  translations: Dexie.Table<Translation, number>;
+  constructor () {
+      super('MyDatabase');
+      this.version(1).stores({
+        destinos: '++id, nombre, imagenUrl'
+      });
+      this.version(2).stores({
+        destinos: '++id, nombre, imagenUrl',
+        translations: '++id, lang, keysObj'
+      });
+  }
+}
+
+export const db = new MyDatabase();
+// fin dexie db
+
+// i18n ini
+class TranslationLoader implements TranslateLoader {
+  constructor(private http: HttpClient) { }
+
+  getTranslation(lang: string): Observable<any> {
+    const promise = db.translations
+      .where('lang')
+      .equals(lang)
+      .toArray()
+      .then(results => {
+        if (results.length === 0) {
+          return this.http
+            .get<Translation[]>(APP_CONFIG_VALUE.apiEndpoint + '/api/translation?lang=' + lang)
+            .toPromise()
+            .then(apiResults => {
+              db.translations.bulkAdd(apiResults);
+              return apiResults;
+            });
+        }
+        return results;
+      }).then((traducciones) => {
+        return traducciones[0];
+      }).then((traducciones) => {
+        var a = {} 
+      //  traducciones.keysObj = traducciones.keysObj.map((t) => ({ [t.key]: t.value}));
+      var translated = {}
+        traducciones.keysObj.forEach(function(data){             
+            if(!translated[data.key]){
+              translated[data.key] = data.value;
+            }
+        });
+        return [translated];
+      });
+   return from(promise).pipe(flatMap((elems) => from(elems)));
+  }
+}
+
+function HttpLoaderFactory(http: HttpClient) {
+  return new TranslationLoader(http);
+}
+// fin i18n
 
 @NgModule({
   declarations: [
@@ -119,11 +194,20 @@ class AppLoadService {
     NgRxStoreModule.forRoot(reducers, {initialState: reducersInitialState}),
     EffectsModule.forRoot([DestinosViajesEffects]),
     StoreDevtoolsModule.instrument(),
-    ReservasModule
+    ReservasModule,
+    ReservasModule,
+    TranslateModule.forRoot({
+      loader: {
+          provide: TranslateLoader,
+          useFactory: (HttpLoaderFactory),
+          deps: [HttpClient]
+      }
+    })
   ],
   providers: [
     DestinosApiClient,
-    AuthService,
+    AuthService,    
+    MyDatabase,
     UsuarioLogueadoGuard,
     { provide: APP_CONFIG, useValue: APP_CONFIG_VALUE },
     AppLoadService,

@@ -1,22 +1,25 @@
 <div class="header">
-<h1 [style.margin-top.px]="15">Wish List</h1>
+  <div class="header-flags">
+      <a (click)="translate.use('es')"><img src="../assets/spanishFlag.png" alt=""></a>
+      <a (click)="translate.use('en')"><img src="../assets/englishFlag.png" alt="" [style.height.px]="33"></a>
+      <a (click)="translate.use('fr')"><img src="../assets/frenchFlag.png" alt=""></a>
+  </div>
+<h1 [style.margin-top.px]="15">{{'Wish list'| translate}}</h1>
 </div>
 <div class="container content">
-  <div class="page-header">
+  <div class="page-header">    
     <div class="container">
       <div class="navLinks">
-        <a [routerLink]="['/home']">Home</a>
-        <a [routerLink]="['/destino']">Destino</a>
+        <a [routerLink]="['/home']" [innerHTML]="'Home' | translate"></a>
+        <a [routerLink]="['/destino']" [innerHTML]="'Destination' | translate"></a>
       </div>
     </div>
   </div>
-  <div class="row">
-    <h1>
-     {{ title }}
-    </h1>
+  <div class="ml-5 mt-3">
+    <h1 [innerHTML]="'Hi' | translate"></h1>
   </div>
   <router-outlet></router-outlet>
 </div>
 <div class="footer">
-    Fecha: {{ time | async }}
+    {{'Date' | translate}}: {{ time | async }}
 </div>

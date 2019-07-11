@@ -10,6 +10,15 @@ section{
 .container.content{
 	min-height: 100vh;
 }
+.header-flags{
+    position: absolute;
+    right: 5px;
+    top: 5px;
+}
+.header-flags img{
+	height: 35px;
+	cursor: pointer;
+}
 .navLinks{
 	margin-top:10px;
 	background: #f7f7f7;
