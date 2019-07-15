@@ -8,7 +8,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { HttpClientModule, HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import Dexie from 'dexie';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-
+import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
 import { AppComponent } from './app.component';
 import { DestinoViajeComponent } from './components/destino-viaje/destino-viaje.component';
 import { ListaDestinosComponent } from './components/lista-destinos/lista-destinos.component';
@@ -202,7 +202,8 @@ function HttpLoaderFactory(http: HttpClient) {
           useFactory: (HttpLoaderFactory),
           deps: [HttpClient]
       }
-    })
+    }),
+    NgxMapboxGLModule
   ],
   providers: [
     DestinosApiClient,
