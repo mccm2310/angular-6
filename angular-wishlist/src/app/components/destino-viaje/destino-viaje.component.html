@@ -21,12 +21,12 @@
                 </li>
             </ul>
             <div>
-                <button class="btn-vote" (click)="voteUp();false"> <i class="material-icons md18">thumb_up</i></button>
-                <button class="btn-vote" (click)="voteDown();false"> <i class="material-icons md18">thumb_down</i></button>                
+                <button class="btn-vote" (click)="voteUp();false" appTrackearClick data-trackear-tags="destino_vote_up lista_destinos_item"> <i class="material-icons md18">thumb_up</i></button>
+                <button class="btn-vote" (click)="voteDown();false" appTrackearClick data-trackear-tags="destino_vote_down lista_destinos_item"> <i class="material-icons md18">thumb_down</i></button>                
                 <button class="btn-vote-reset" (click)="resetVotes();false" *ngIf="destino.votes != 0" title="Resetear">&times;</button>
             </div>
             <div class="buttons-bar">
-                <button class="btn-card" (click)="ir();false" *ngIf="!destino.isSelected()">Favorito!</button>                
+                <button class="btn-card" (click)="ir();false" *ngIf="!destino.isSelected()" appTrackearClick data-trackear-tags="destino_elegir_preferido lista_destinos_item">Favorito!</button>                
                 <button class="btn-card" [routerLink]="['/destino', destino.id]" [style.margin-left.px]="15">Ver Detalle</button>   
             </div>
         </div>
