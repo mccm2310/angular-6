@@ -61,13 +61,13 @@ export class ResetVotesAction implements Action {
   constructor(public destino: DestinoViaje) {}
 }
 
-export class initMyDataAction implements Action {
+export class InitMyDataAction implements Action {
 	type = DestinosViajesActionTypes.INIT_MY_DATA;
-	constructor(public destinos: string[]) {}
+	constructor(public destinos: [{'nombre': string, 'imagenUrl':string, 'country':string, 'desc':string, 'votes':number}]) {}
   }
 
 export type DestinosViajesActions = NuevoDestinoAction | ElegidoFavoritoAction | EliminarDestinoAction | 
-						VoteUpAction | VoteDownAction | ResetVotesAction | initMyDataAction;
+						VoteUpAction | VoteDownAction | ResetVotesAction | InitMyDataAction;
 
 //REDUCERS
 export function reducerDestinosViajes(
@@ -76,7 +76,7 @@ export function reducerDestinosViajes(
 ) : DestinosViajesState {
 	switch (action.type) {
 		case DestinosViajesActionTypes.INIT_MY_DATA: {
-			const destinos: string[] = (action as initMyDataAction).destinos;
+			const destinos: [{'nombre': string, 'imagenUrl':string, 'country':string, 'desc':string, 'votes':number}] = (action as InitMyDataAction).destinos;
 			return {
 				...state,
 				items: destinos.map((d) => new DestinoViaje(d.nombre, d.imagenUrl, d.country, d.desc, d.votes))

@@ -22,7 +22,7 @@ import {
   reducerDestinosViajes, 
   initializeDestinosViajesState,
   DestinosViajesEffects, 
-  initMyDataAction} from './models/destino-viaje-state.model';
+  InitMyDataAction} from './models/destino-viaje-state.model';
 import { LoginComponent } from './components/login/login/login.component';
 import { ProtectedComponent } from './components/protected/protected/protected.component';
 import { AuthService } from './services/auth.service';
@@ -101,7 +101,7 @@ class AppLoadService {
     const headers: HttpHeaders = new HttpHeaders({'X-API-TOKEN': 'token-seguridad'});
     const req = new HttpRequest('GET', APP_CONFIG_VALUE.apiEndpoint + '/my', { headers: headers });
     const response: any = await this.http.request(req).toPromise();
-    this.store.dispatch(new initMyDataAction(response.body));
+    this.store.dispatch(new InitMyDataAction(response.body));
   }
 }
 
