@@ -1,5 +1,5 @@
 <div class="card">
-    <div class="card-content">
+    <div class="card-content" [@esFavorito]="destino.isSelected() ? 'estadoFavorito' : 'estadoNoFavorito'">
         <div class="card-img">            
             <h2>{{ destino.nombre }}</h2><small>Votos:  {{destino.votes}}</small>
             <h5 (click)="eliminar();false">&times;</h5>

@@ -9,6 +9,8 @@ import { HttpClientModule, HttpClient, HttpHeaders, HttpRequest } from '@angular
 import Dexie from 'dexie';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { NgxMapboxGLModule } from 'ngx-mapbox-gl';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 import { AppComponent } from './app.component';
 import { DestinoViajeComponent } from './components/destino-viaje/destino-viaje.component';
 import { ListaDestinosComponent } from './components/lista-destinos/lista-destinos.component';
@@ -187,6 +189,7 @@ function HttpLoaderFactory(http: HttpClient) {
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     ReactiveFormsModule,
     HttpClientModule,
     FormsModule,
