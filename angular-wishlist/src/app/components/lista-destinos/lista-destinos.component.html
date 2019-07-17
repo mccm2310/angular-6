@@ -23,6 +23,7 @@
 			(selectItem)="elegido(d)"			
 			(deleteItem)="eliminado(i)"
 			appEspiame
+			[attr.id]="'destino-' + d.nombre"
 		>    		
     	</app-destino-viaje>
 	 </div>
