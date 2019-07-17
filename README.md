@@ -1,29 +1,14 @@
 # README #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+### WishList ###
 
-### What is this repository for? ###
+-Ingresa los destinos que quieres visitar.
+-Selecciona un favorito entre ellos.
+-Puedes dale votos a favor o en contra.
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+### TO DO ###
 
-### How do I get set up? ###
+-Modulo de Detalle del destino
+-Modulo de Vuelos.
+-Layers en mapas.
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
